@@ -1,10 +1,13 @@
 .chat_window {
+  flex: 1;
+  
   &__messages {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
     padding: 30px;
+    height: 100%;
   }
 
   &__messages_wrapper {
@@ -85,29 +88,5 @@
     background-color: transparent;
     cursor: pointer;
     opacity: 0.7;
-  }
-
-  &__users {
-    padding: 20px;
-    width: 250px;
-    max-height: 100%;
-    overflow-y: auto;
-    border-left: 1px solid rgba(159, 183, 197, 0.2);
-    background-color: rgba(100, 100, 0, 0.1);
-  }
-
-  &__users_list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  &__users_item {
-    margin-top: 10px;
-    padding: 8px 14px;
-    border-radius: 3px;
-    font-weight: 500;
-    background-color: #fff;
-    box-shadow: 0 3px 5px rgba(159, 183, 197, 0.1);
   }
 }

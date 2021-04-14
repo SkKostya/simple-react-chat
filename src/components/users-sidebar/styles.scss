@@ -1,0 +1,23 @@
+.users_sidebar {
+  padding: 20px;
+  width: 250px;
+  max-height: 100%;
+  overflow-y: auto;
+  border-left: 1px solid rgba(159, 183, 197, 0.2);
+  background-color: rgba(100, 100, 0, 0.1);
+
+  &__list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  &__item {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 3px;
+    font-weight: 500;
+    background-color: #fff;
+    box-shadow: 0 3px 5px rgba(159, 183, 197, 0.1);
+  }
+}

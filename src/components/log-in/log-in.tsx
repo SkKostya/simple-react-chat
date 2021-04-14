@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
 interface IProps {
   onLogin: ({ userName }: { userName: string }) => void;
 }
 
 const LogIn = ({ onLogin }: IProps) => {
-  const [userName, setUserName] = React.useState('');
+  const [userName, setUserName] = React.useState("");
   const [isLoading, setLoading] = React.useState(false);
 
   const onEnter = async () => {
     if (!userName) {
-      return alert('Неверные данные');
+      return alert("Неверные данные");
     }
     const obj = {
       userName,
@@ -20,15 +20,16 @@ const LogIn = ({ onLogin }: IProps) => {
   };
 
   return (
-    <div className="log_in">
+    <div className="log-in">
       <input
         type="text"
         placeholder="Ваше имя"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
+        className="log-in__name-field"
       />
-      <button disabled={isLoading} onClick={onEnter} className="log_in__button">
-        {isLoading ? 'ВХОД...' : 'ВОЙТИ'}
+      <button disabled={isLoading} onClick={onEnter} className="log-in__button">
+        {isLoading ? "ВХОД..." : "ВОЙТИ"}
       </button>
     </div>
   );

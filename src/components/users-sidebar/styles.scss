@@ -3,8 +3,8 @@
   width: 250px;
   max-height: 100%;
   overflow-y: auto;
-  border-left: 1px solid rgba(159, 183, 197, 0.2);
-  background-color: rgba(100, 100, 0, 0.1);
+  border-left: 1px solid $Mercury;
+  background-color: $VerdunGreenLight;
 
   &__list {
     padding: 0;
@@ -17,7 +17,7 @@
     padding: 8px 14px;
     border-radius: 3px;
     font-weight: 500;
-    background-color: #fff;
-    box-shadow: 0 3px 5px rgba(159, 183, 197, 0.1);
+    background-color: $White;
+    box-shadow: 0 3px 5px $Casper;
   }
 }

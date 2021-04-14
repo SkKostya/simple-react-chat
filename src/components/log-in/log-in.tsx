@@ -1,7 +1,5 @@
 import React from 'react';
 
-import "./styles.scss";
-
 interface IProps {
   onLogin: ({ userName }: { userName: string }) => void;
 }

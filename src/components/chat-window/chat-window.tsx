@@ -1,8 +1,6 @@
 import React from "react";
 import moment from "moment";
 
-import "./styles.scss";
-
 interface IMessage {
   text: string;
   userName: string;

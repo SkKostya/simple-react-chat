@@ -1,5 +1,6 @@
 const ROOM_JOIN = "ROOM:JOIN";
 const ROOM_SET_USERS = "ROOM:SET_USERS";
+const ROOM_NEW_MESSAGE = "ROOM:NEW_MESSAGE";
 
 const express = require("express");
 
@@ -14,12 +15,17 @@ const rooms = new Map();
 rooms.set(
   ROOM_ID,
   new Map([
-    ["users", new Map()]
+    ["users", new Map()],
+    ["messages", []]
   ])
 );
 
 app.get("/rooms", (req, res) => {
-  res.json({ users: [...rooms.get(ROOM_ID).get("users").values()] });
+  const obj = {
+    users: [...rooms.get(ROOM_ID).get('users').values()],
+    messages: [...rooms.get(ROOM_ID).get('messages').values()],
+  };
+  res.json(obj);
 });
 
 io.on("connection", (socket) => {
@@ -28,6 +34,12 @@ io.on("connection", (socket) => {
     rooms.get(ROOM_ID).get("users").set(socket.id, userName);
     const users = [...rooms.get(ROOM_ID).get("users").values()];
     socket.broadcast.to(ROOM_ID).emit(ROOM_SET_USERS, users);
+  });
+
+  socket.on(ROOM_NEW_MESSAGE, ({ userName, text, date }) => {
+    const message = { userName, text, date };
+    rooms.get(ROOM_ID).get("messages").push(message);
+    socket.broadcast.to(ROOM_ID).emit(ROOM_NEW_MESSAGE, message);
   });
 
   socket.on("disconnect", () => {

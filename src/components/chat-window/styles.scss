@@ -68,7 +68,7 @@
     &:focus {
       border: 1px solid $DodgerBlue;
 
-      & + .chat__sent_button {
+      & + .form__button {
         border-left: 1px solid $DodgerBlue;
       }
     }

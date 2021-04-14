@@ -3,18 +3,18 @@ import React from "react";
 import { getRooms } from "./helpers/api";
 
 import socket from "./socket";
-import { ROOM_JOIN, ROOM_SET_USERS } from "./constants/socket";
+import { ROOM_JOIN, ROOM_SET_USERS, ROOM_NEW_MESSAGE } from "./constants/socket";
+import { INITIAL_STATE } from "./constants/initial-state";
 
 import MainReducer from "./redux.reducers";
-import { joinRoom, setData, setUsers as setUsersAction } from "./redux.actions";
+import { joinRoom, setData, setUsers as setUsersAction, addMessage } from "./redux.actions";
 
 import { LogIn, ChatWindow, UsersSidebar } from "./components";
 
-const INITIAL_STATE = {
-  joined: false,
-  userName: null,
-  users: [],
-  messages: [],
+interface IMessage {
+  userName: string;
+  text: string;
+  date?: Date;
 };
 
 function App() {
@@ -30,12 +30,23 @@ function App() {
     dispatch(setData(data));
   };
 
+  const messageDispatch = (message: IMessage) => {
+    dispatch(addMessage(message));
+  };
+
+  const onAddMessage = ({ userName, text }: IMessage) => {
+    const message = { userName, text, date: new Date() };
+    socket.emit(ROOM_NEW_MESSAGE, message);
+    messageDispatch(message);
+  };
+
   const setUsers = (users: string[]) => {
     dispatch(setUsersAction(users));
   };
 
   React.useEffect(() => {
     socket.on(ROOM_SET_USERS, setUsers);
+    socket.on(ROOM_NEW_MESSAGE, messageDispatch);
   }, []);
 
   return (
@@ -44,15 +55,9 @@ function App() {
         ? <LogIn onLogin={onLogin} />
         : <div className="chat">
           <ChatWindow
-            messages={[
-              {
-                text: "Hello Everyone",
-                userName: "Jone",
-                date: new Date()
-              }
-            ]}
-            userName="Dena"
-            onAddMessage={({ userName, text }) => null}
+            messages={state.messages}
+            userName={state.userName}
+            onAddMessage={onAddMessage}
           />
           <UsersSidebar users={state.users} />
         </div>

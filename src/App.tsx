@@ -41,8 +41,6 @@ function App() {
     socket.on('ROOM:SET_USERS', setUsers);
   }, []);
 
-  console.log(state)
-
   return (
     <div className="wrapper">
       {!state.joined

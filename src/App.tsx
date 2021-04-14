@@ -1,8 +1,8 @@
-import React from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "axios";
 
-import socket from './socket';
-import Reducer from './reducer';
+import socket from "./socket";
+import Reducer from "./reducer";
 
 import { LogIn, ChatWindow, UsersSidebar } from "./components";
 
@@ -18,26 +18,26 @@ function App() {
 
   const onLogin = async (obj: { userName: string }) => {
     dispatch({
-      type: 'JOINED',
+      type: "JOINED",
       payload: obj,
     });
-    socket.emit('ROOM:JOIN', obj);
-    const { data } = await axios.get(`/rooms`);
+    socket.emit("ROOM:JOIN", obj);
+    const { data } = await axios.get("/rooms");
     dispatch({
-      type: 'SET_DATA',
+      type: "SET_DATA",
       payload: data,
     });
   };
 
   const setUsers = (users: string[]) => {
     dispatch({
-      type: 'SET_USERS',
+      type: "SET_USERS",
       payload: users,
     });
   };
 
   React.useEffect(() => {
-    socket.on('ROOM:SET_USERS', setUsers);
+    socket.on("ROOM:SET_USERS", setUsers);
   }, []);
 
   return (

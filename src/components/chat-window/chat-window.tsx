@@ -19,12 +19,12 @@ interface IProps {
 };
 
 const ChatWindow = ({ messages, userName, onAddMessage }: IProps) => {
-  const [messageValue, setMessageValue] = React.useState('');
+  const [messageValue, setMessageValue] = React.useState("");
   const messagesRef = React.useRef<any>(null);
 
   const onSendMessage = () => {
     onAddMessage({ userName, text: messageValue });
-    setMessageValue('');
+    setMessageValue("");
   };
 
   React.useEffect(() => {

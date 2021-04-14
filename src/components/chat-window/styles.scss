@@ -1,4 +1,4 @@
-.chat_window {
+.chat-window {
   flex: 1;
   
   &__messages {
@@ -10,28 +10,22 @@
     height: 100%;
   }
 
-  &__messages_wrapper {
+  &__messages-wrapper {
     flex: 1;
     height: calc(100% - 155px);
     overflow: auto;
   }
+}
 
-  &__user_name {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.message {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $VerdunGreen;
   }
 
-  &__message {
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-
-    &:not(:last-child) {
-      border-bottom: 1px solid $VerdunGreen;
-    }
-  }
-
-  &__message_text {
+  &__text {
     display: inline-flex;
     padding: 8px 12px 12px;
     margin-bottom: 2px;
@@ -41,24 +35,30 @@
     color: $White;
   }
 
-  &__message_user_name {
+  &__user-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__user-name {
     font-size: 14px;
     opacity: 0.7;
 
-    &--date {
+    &--small {
       font-size: 10px;
       opacity: 0.5;
     }
   }
+}
 
-  &__form {
-    position: relative;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid $VerdunGreen;
-  }
-
-  &__form_control {
+.form {
+  position: relative;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid $VerdunGreen;
+  
+  &__control {
     padding: 12px 16px;
     padding-right: 110px;
     width: 100%;
@@ -74,7 +74,7 @@
     }
   }
 
-  &__sent_button {
+  &__button {
     position: absolute;
     top: 20px;
     right: 0;

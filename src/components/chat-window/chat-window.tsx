@@ -32,32 +32,32 @@ const ChatWindow = ({ messages, userName, onAddMessage }: IProps) => {
   }, [messages]);
 
   return (
-    <div className="chat_window">
-      <div className="chat_window__messages">
-        <div ref={messagesRef} className="chat_window__messages_wrapper">
+    <div className="chat-window">
+      <div className="chat-window__messages">
+        <div ref={messagesRef} className="chat-window__messages-wrapper">
           {messages.map((message, i) => (
-            <div className="chat_window__message" key={i}>
-              <p className="chat_window__message_text">{message.text}</p>
-              <div className="chat_window__user_name">
-                <span className="chat_window__message_user_name">{message.userName}</span>
-                <span className="chat_window__message_user_name chat_window__message_user_name--date">
+            <div className="message" key={i}>
+              <p className="message__text">{message.text}</p>
+              <div className="message__user-container">
+                <span className="message__user-name">{message.userName}</span>
+                <span className="message__user-name message__user-name--small">
                   {moment(message.date).toNow()}
                 </span>
               </div>
             </div>
           ))}
         </div>
-        <form className="chat_window__form">
+        <form className="form">
           <input
             value={messageValue}
             onChange={(e) => setMessageValue(e.target.value)}
-            className="chat_window__form_control"
+            className="form__control"
             placeholder="Введите сообщение"
           />
           <button
             onClick={onSendMessage}
             type="button"
-            className="chat_window__sent_button"
+            className="form__button"
             id="sent-button"
           >
             Отправить

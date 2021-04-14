@@ -1,65 +1,68 @@
 import React from "react";
+import firebase from "firebase";
 
-import { getRooms } from "./helpers/api";
-
-import socket from "./socket";
-import { ROOM_JOIN, ROOM_SET_USERS, ROOM_NEW_MESSAGE } from "./constants/socket";
-import { INITIAL_STATE } from "./constants/initial-state";
-
-import MainReducer from "./redux.reducers";
-import { joinRoom, setData, setUsers as setUsersAction, addMessage } from "./redux.actions";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { LogIn, ChatWindow, UsersSidebar } from "./components";
+import { Context } from ".";
 
 interface IMessage {
-  userName: string;
+  userName: string | null;
   text: string;
   date?: Date;
 };
 
 function App() {
-  const [state, dispatch] = React.useReducer(
-    (state: any, action: any) => MainReducer(state, action),
-    INITIAL_STATE
+  const { auth, firestore } = React.useContext(Context);
+  const [ user, loading, error ] = useAuthState(auth);
+  const [ messages, mLoading, mError ] = useCollectionData(
+    firestore.collection("messages").orderBy("date")
+  );
+  const [ users, uLoading, uError ] = useCollectionData(
+    firestore.collection("users").orderBy("uid")
   );
 
-  const onLogin = async (obj: { userName: string }) => {
-    dispatch(joinRoom(obj));
-    socket.emit(ROOM_JOIN, obj);
-    const { data } = await getRooms();
-    dispatch(setData(data));
+  const onLogin = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const { user } = await auth.signInWithPopup(provider);
+
+    await firestore.collection("users").add(user);
   };
 
-  const messageDispatch = (message: IMessage) => {
-    dispatch(addMessage(message));
+  const onAddMessage = async ({ userName, text }: IMessage) => {
+    await firestore.collection("messages").add({
+      userName,
+      text,
+      date: firebase.firestore.FieldValue.serverTimestamp()
+    });
   };
 
-  const onAddMessage = ({ userName, text }: IMessage) => {
-    const message = { userName, text, date: new Date() };
-    socket.emit(ROOM_NEW_MESSAGE, message);
-    messageDispatch(message);
-  };
+  if(error) {
+    return <div>{JSON.stringify(error)}</div>
+  }
+  if(mError) {
+    return <div>{JSON.stringify(error)}</div>
+  }
+  if(uError) {
+    return <div>{JSON.stringify(error)}</div>
+  }
 
-  const setUsers = (users: string[]) => {
-    dispatch(setUsersAction(users));
-  };
-
-  React.useEffect(() => {
-    socket.on(ROOM_SET_USERS, setUsers);
-    socket.on(ROOM_NEW_MESSAGE, messageDispatch);
-  }, []);
+  const validMessages = messages
+    ? messages.map(({ userName, text, date }) => { return { userName, text, date: date && date.toDate() } })
+    : [];
 
   return (
     <div className="wrapper">
-      {!state.joined
-        ? <LogIn onLogin={onLogin} />
+      {!user || !messages || !users
+        ? <LogIn isLoading={loading || mLoading || uLoading} onLogin={onLogin} />
         : <div className="chat">
           <ChatWindow
-            messages={state.messages}
-            userName={state.userName}
+            messages={validMessages}
+            userName={user.displayName}
             onAddMessage={onAddMessage}
           />
-          <UsersSidebar users={state.users} />
+          <UsersSidebar users={users?.map(({ userName }) => userName) || []} />
         </div>
       }
     </div>

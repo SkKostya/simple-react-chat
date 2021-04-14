@@ -1,4 +1,6 @@
 import React from 'react';
+// import axios from 'axios';
+
 import "./styles.scss";
 
 interface IProps {
@@ -17,6 +19,7 @@ const LogIn = ({ onLogin }: IProps) => {
       userName,
     };
     setLoading(true);
+    // await axios.post('/rooms', obj);
     onLogin(obj);
   };
 

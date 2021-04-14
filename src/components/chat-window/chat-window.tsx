@@ -1,11 +1,9 @@
 import React from "react";
-import moment from "moment";
 
-interface IMessage {
-  text: string;
-  userName: string;
-  date: Date;
-}
+import Message from "./message";
+import Form from "./form";
+
+import { IProps as IMessage } from "./message";
 
 interface IAddMessage {
   userName: string;
@@ -36,33 +34,16 @@ const ChatWindow = ({ messages, userName, onAddMessage }: IProps) => {
       <div className="chat-window__messages">
         <div ref={messagesRef} className="chat-window__messages-wrapper">
           {messages.map((message, i) => (
-            <div className="message" key={i}>
-              <p className="message__text">{message.text}</p>
-              <div className="message__user-container">
-                <span className="message__user-name">{message.userName}</span>
-                <span className="message__user-name message__user-name--small">
-                  {moment(message.date).toNow()}
-                </span>
-              </div>
-            </div>
+            <Message {...message} key={i} />
           ))}
         </div>
-        <form className="form">
-          <input
-            value={messageValue}
-            onChange={(e) => setMessageValue(e.target.value)}
-            className="form__control"
-            placeholder="Введите сообщение"
-          />
-          <button
-            onClick={onSendMessage}
-            type="button"
-            className="form__button"
-            id="sent-button"
-          >
-            Отправить
-          </button>
-        </form>
+        <Form
+          {...{
+            messageValue,
+            setMessageValue,
+            onSendMessage
+          }}
+        />
       </div>
     </div>
   );

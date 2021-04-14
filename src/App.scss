@@ -6,7 +6,7 @@
 .chat {
   display: flex;
   height: calc(100vh - 40px);
-  border: 1px solid rgba(159, 183, 197, 0.2);
+  border: 1px solid $Mercury;
   border-radius: 8px;
   overflow: hidden;
 }

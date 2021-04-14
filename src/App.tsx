@@ -1,8 +1,12 @@
 import React from "react";
-import axios from "axios";
+
+import { getRooms } from "./helpers/api";
 
 import socket from "./socket";
-import Reducer from "./reducer";
+import { ROOM_JOIN, ROOM_SET_USERS } from "./constants/socket";
+
+import MainReducer from "./redux.reducers";
+import { joinRoom, setData, setUsers as setUsersAction } from "./redux.actions";
 
 import { LogIn, ChatWindow, UsersSidebar } from "./components";
 
@@ -14,30 +18,24 @@ const INITIAL_STATE = {
 };
 
 function App() {
-  const [state, dispatch] = React.useReducer((arg: any, action: any) => Reducer(arg, action), INITIAL_STATE);
+  const [state, dispatch] = React.useReducer(
+    (state: any, action: any) => MainReducer(state, action),
+    INITIAL_STATE
+  );
 
   const onLogin = async (obj: { userName: string }) => {
-    dispatch({
-      type: "JOINED",
-      payload: obj,
-    });
-    socket.emit("ROOM:JOIN", obj);
-    const { data } = await axios.get("/rooms");
-    dispatch({
-      type: "SET_DATA",
-      payload: data,
-    });
+    dispatch(joinRoom(obj));
+    socket.emit(ROOM_JOIN, obj);
+    const { data } = await getRooms();
+    dispatch(setData(data));
   };
 
   const setUsers = (users: string[]) => {
-    dispatch({
-      type: "SET_USERS",
-      payload: users,
-    });
+    dispatch(setUsersAction(users));
   };
 
   React.useEffect(() => {
-    socket.on("ROOM:SET_USERS", setUsers);
+    socket.on(ROOM_SET_USERS, setUsers);
   }, []);
 
   return (

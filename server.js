@@ -1,3 +1,6 @@
+const ROOM_JOIN = "ROOM:JOIN";
+const ROOM_SET_USERS = "ROOM:SET_USERS";
+
 const express = require("express");
 
 const app = express();
@@ -20,18 +23,18 @@ app.get("/rooms", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  socket.on("ROOM:JOIN", ({ userName }) => {
+  socket.on(ROOM_JOIN, ({ userName }) => {
     socket.join(ROOM_ID);
     rooms.get(ROOM_ID).get("users").set(socket.id, userName);
     const users = [...rooms.get(ROOM_ID).get("users").values()];
-    socket.broadcast.to(ROOM_ID).emit("ROOM:SET_USERS", users);
+    socket.broadcast.to(ROOM_ID).emit(ROOM_SET_USERS, users);
   });
 
   socket.on("disconnect", () => {
     rooms.forEach((value) => {
       if (value.get("users").delete(socket.id)) {
         const users = [...value.get("users").values()];
-        socket.broadcast.to(ROOM_ID).emit("ROOM:SET_USERS", users);
+        socket.broadcast.to(ROOM_ID).emit(ROOM_SET_USERS, users);
       }
     });
   });

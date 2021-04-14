@@ -1,6 +1,7 @@
 export const JOINED = "JOINED";
 export const SET_DATA = "SET_DATA";
 export const SET_USERS = "SET_USERS";
+export const ADD_MESSAGE = "ADD_MESSAGE";
 
 const MainReducer = (state, action) => {
   switch (action.type) {
@@ -15,12 +16,19 @@ const MainReducer = (state, action) => {
       return {
         ...state,
         users: action.payload.users,
+        messages: action.payload.messages
       };
 
     case SET_USERS:
       return {
         ...state,
         users: action.payload,
+      };
+
+    case ADD_MESSAGE:
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
       };
 
     default:

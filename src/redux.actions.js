@@ -1,4 +1,4 @@
-import { JOINED, SET_DATA, SET_USERS } from "./redux.reducers";
+import { JOINED, SET_DATA, SET_USERS, ADD_MESSAGE } from "./redux.reducers";
 
 export const joinRoom = user => {
   return {
@@ -19,4 +19,11 @@ export const setUsers = users => {
     type: SET_USERS,
     payload: users,
   }
-}
+};
+
+export const addMessage = message => {
+  return {
+    type: ADD_MESSAGE,
+    payload: message,
+  }
+};

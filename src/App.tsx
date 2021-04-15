@@ -28,8 +28,9 @@ function App() {
     const { user } = await auth.signInWithPopup(provider);
 
     if(users) {
-      if(!!!users.find(({ uid }) => user.uid === uid))
-      await firestore.collection("users").add({ uid: user.uid, usesName: user.displayName });
+      if(!!!users.find(({ uid }) => user.uid === uid)) {
+        await firestore.collection("users").add({ uid: user.uid, usesName: user.displayName });
+      }
     }
   };
 

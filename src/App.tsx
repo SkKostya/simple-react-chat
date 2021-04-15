@@ -29,7 +29,7 @@ function App() {
 
     if(users) {
       if(!!!users.find(({ uid }) => user.uid === uid)) {
-        await firestore.collection("users").add({ uid: user.uid, usesName: user.displayName });
+        await firestore.collection("users").add({ uid: user.uid, userName: user.displayName });
       }
     }
   };

@@ -8,7 +8,7 @@ interface IProps {
 const UsersSidebar = ({ users, onLogOut }: IProps) => {
   return (
     <div className="users-sidebar">
-      <h3>Онлайн ({users.length}):</h3>
+      <h3>Всего ({users.length}):</h3>
       <ul className="users-sidebar__list">
         {users.map((name, index) => (
           <li className="users-sidebar__item" key={name + String(index)}>{name}</li>

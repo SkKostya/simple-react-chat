@@ -27,7 +27,14 @@ function App() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const { user } = await auth.signInWithPopup(provider);
 
-    await firestore.collection("users").add(user);
+    if(users) {
+      if(!!!users.find(({ uid }) => user.uid === uid))
+      await firestore.collection("users").add({ uid: user.uid, usesName: user.displayName });
+    }
+  };
+
+  const onLogOut = async () => {
+    await auth.signOut();
   };
 
   const onAddMessage = async ({ userName, text }: IMessage) => {
@@ -62,7 +69,7 @@ function App() {
             userName={user.displayName}
             onAddMessage={onAddMessage}
           />
-          <UsersSidebar users={users?.map(({ userName }) => userName) || []} />
+          <UsersSidebar onLogOut={onLogOut} users={users?.map(({ userName }) => userName) || []} />
         </div>
       }
     </div>

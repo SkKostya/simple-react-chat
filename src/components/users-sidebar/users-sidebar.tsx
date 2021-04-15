@@ -2,9 +2,10 @@ import React from "react";
 
 interface IProps {
   users: string[];
+  onLogOut: () => void;
 };
 
-const UsersSidebar = ({ users }: IProps) => {
+const UsersSidebar = ({ users, onLogOut }: IProps) => {
   return (
     <div className="users-sidebar">
       <h3>Онлайн ({users.length}):</h3>
@@ -13,6 +14,7 @@ const UsersSidebar = ({ users }: IProps) => {
           <li className="users-sidebar__item" key={name + String(index)}>{name}</li>
         ))}
       </ul>
+      <button className="users-sidebar__log-out" onClick={onLogOut}>Выйти</button>
     </div>
   );
 };

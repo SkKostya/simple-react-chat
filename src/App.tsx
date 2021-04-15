@@ -57,7 +57,9 @@ function App() {
   }
 
   const validMessages = messages
-    ? messages.map(({ userName, text, date }) => { return { userName, text, date: date && date.toDate() } })
+    ? messages.map(({ userName, text, date }) => {
+      return { userName, text, date: date && date.toDate() }
+    })
     : [];
 
   return (
